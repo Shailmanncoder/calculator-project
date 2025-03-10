@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Calculator</title>
+    <link rel="icon" href="logo.png">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .calculator {
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+            max-width: 320px;
+            width: 90vw;
+            background-color: black;
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .heading {
+            text-decoration: underline wavy black;
+            font-style: italic;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .box {
+            width: 100%;
+            height: 60px;
+            font-size: 2rem;
+            border: none;
+            border-radius: 5px;
+            background-color: #dbefdf;
+            text-align: right;
+            padding: 10px;
+        }
+
+        .rowsie {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        button {
+            flex: 1;
+            margin: 5px;
+            height: 50px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+        }
+
+        .bon {
+            background-color: rgb(255, 165, 0);
+        }
+
+        .born {
+            background-color: grey;
+        }
+
+        .bon:hover, .born:hover {
+            background-color: #e1e1e1;
+            color: #0d0000;
+            transition: 0.3s;
+        }
+
+        @media (max-width: 480px) {
+            .calculator {
+                max-width: 90%;
+            }
+            button {
+                height: 45px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1 class="heading">Calculator</h1>
+    <div class="calculator">
+        <input type="text" value="0" readonly class="box" id="output">
+        <div class="rowsie">
+            <button class="born" onclick="clearOutput()">AC</button>
+            <button class="born" onclick="appendOperator('%')">%</button>
+            <button class="born" onclick="deleteLast()">&#x232b;</button>
+            <button class="bon" onclick="appendOperator('÷')">÷</button>
+        </div>
+        <div class="rowsie">
+            <button class="born" onclick="appendNumber(7)">7</button>
+            <button class="born" onclick="appendNumber(8)">8</button>
+            <button class="born" onclick="appendNumber(9)">9</button>
+            <button class="bon" onclick="appendOperator('x')">x</button>
+        </div>
+        <div class="rowsie"> 
+            <button class="born" onclick="appendNumber(4)">4</button>
+            <button class="born" onclick="appendNumber(5)">5</button>
+            <button class="born" onclick="appendNumber(6)">6</button>
+            <button class="bon" onclick="appendOperator('-')">-</button>
+        </div> 
+        <div class="rowsie">
+            <button class="born" onclick="appendNumber(1)">1</button>
+            <button class="born" onclick="appendNumber(2)">2</button>
+            <button class="born" onclick="appendNumber(3)">3</button>
+            <button class="bon" onclick="appendOperator('+')">+</button>
+        </div>
+        <div class="rowsie">
+            <button class="born" onclick="appendNumber(0)">0</button>
+            <button class="born" onclick="appendNumber('00')">00</button>
+            <button class="born" onclick="appendNumber('.')">.</button>
+            <button class="bon" onclick="calculateResult()">=</button>
+        </div>
+    </div>
+
+    <script>
+        let output = document.getElementById('output');
+
+        function appendNumber(number) {
+            if (output.value === "0") {   
+                output.value = number;
+            } else {
+                output.value += number;
+            }
+        }
+
+        function appendOperator(operator) {
+            const lastChar = output.value[output.value.length - 1];
+            if ("+-*/%".includes(lastChar)) {
+                output.value = output.value.slice(0, -1) + operator;
+            } else {
+                output.value += operator;
+            }
+        }
+
+        function clearOutput() {
+            output.value = "0";
+        }
+
+        function deleteLast() {
+            if (output.value.length === 1 || output.value === "0") {
+                output.value = "0";
+            } else {
+                output.value = output.value.slice(0, -1);
+            }
+        }
+
+        function calculateResult() {
+            try {
+                output.value = eval(output.value.replace("÷", "/").replace("x", "*"));
+            } catch {
+                output.value = "Error";
+            }
+        }
+    </script>
+</body>
+</html>
